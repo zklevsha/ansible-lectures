@@ -1,0 +1,68 @@
+---
+- name: Install software
+  hosts: web
+  become: yes
+  tasks:
+    - name: install epel release
+      dnf:
+        name: epel-release
+        state: present
+
+    - name: install nginx
+      dnf:
+        name: nginx
+        state: present
+
+    # for SELinux managment
+    - name: install policycoreutils-python-utils
+      dnf:
+        name: policycoreutils-python-utils
+        state: present
+
+- name: Configure system
+  hosts: web
+  become: yes
+  tasks:
+    - name: open HTTP port
+      firewalld:
+        port: "80/tcp"
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+    - name: open HTTPS port
+      firewalld:
+        port: "443/tcp"
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+    - name: SELinux set httpd_can_network_connect=true
+      seboolean:
+        name: httpd_can_network_connect
+        state: yes
+        persistent: yes
+
+- name: Configure nginx service
+  hosts: web
+  become: yes
+  tasks:
+    - name: copy index page
+      copy:
+        src: index.html
+        dest: /usr/share/nginx/html/index.html
+        owner: root
+        group: root
+      notify: reload nginx
+
+    - name: enable service
+      systemd:
+        name: nginx
+        enabled: yes
+        state: started
+
+  handlers:
+    - name: reload nginx
+      systemd:
+        name: nginx
+        state: reloaded
