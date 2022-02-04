@@ -1,0 +1,15 @@
+---
+- name: Configure system
+  hosts: zabbix
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: "open zabbix port"
+      firewalld:
+        port: "10052/tcp"
+        permanent: yes
+        state: enabled
+        immediate: yes
+      loop: "{{ zabbix_ports }}"
+      tags: open-ports
+   

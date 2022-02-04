@@ -1,0 +1,17 @@
+---
+- name: Configure system
+  hosts: zabbix
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: "Creating zabbix directory"
+      ansible.builtin.file:
+        path: "{{ zabbix_install_path }}"
+        state: directory
+      tags: create-directory
+    - name: copy config file
+      ansible.builtin.copy:
+        src: config.yml
+        dest: "{{ zabbix_install_path }}/zabbix.conf"
+      tags: copy-config
+   
