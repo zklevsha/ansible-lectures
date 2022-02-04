@@ -10,6 +10,5 @@
         permanent: yes
         state: enabled
         immediate: yes
-      loop: "{{ zabbix_ports }}"
       tags: open-ports
    
