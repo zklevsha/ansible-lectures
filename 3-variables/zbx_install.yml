@@ -1,0 +1,34 @@
+---
+- name: Configure system
+  hosts: zabbix
+  become: yes
+  gather_facts: false
+  vars:
+    zabbix_conf:
+      install_path: /opt/zabbix
+      ports:
+        - 10050/tcp
+        - 10051/tcp
+      dirs: 
+        - var
+        - log
+        - etc
+        - scripts
+        - bin
+  tasks:
+    - name: open zabbix ports
+      firewalld:
+        port: "{{ item }}"
+        permanent: yes
+        state: enabled
+        immediate: yes
+      loop: "{{ zabbix_conf.ports }}"
+      tags: open-ports
+
+    - name: create zabbix directories
+      ansible.builtin.file:
+        path: "{{ zabbix_conf.install_path }}/{{ item }}"
+        state: directory
+        recurse: yes
+      loop: "{{ zabbix_conf.dirs }}"
+      tags: create-dirs
