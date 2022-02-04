@@ -6,7 +6,7 @@
   tasks:
     - name: "open zabbix port"
       firewalld:
-        port: "10052/tcp"
+        port: "{{ zabbix_port }}"
         permanent: yes
         state: enabled
         immediate: yes
