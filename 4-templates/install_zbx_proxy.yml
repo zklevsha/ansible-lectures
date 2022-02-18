@@ -1,0 +1,28 @@
+---
+- name: Install Zabbix proxy
+  hosts: zabbixproxy
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: create zabbix directories
+      ansible.builtin.file:
+        path: "{{ zabbix_install_path }}/{{ item }}"
+        state: directory
+        recurse: yes
+      loop: "{{ dirs }}"
+      tags: create-dirs
+
+    - name: Copy config file
+      ansible.builtin.template:
+        src: zabbixproxy.conf.j2
+        dest: "{{zabbix_install_path}}/etc/{{ inventory_hostname }}.conf"
+      tags: copy-config
+
+    - name: open zabbix ports
+      ansible.builtin.firewalld:
+        port: "{{ item }}"
+        permanent: yes
+        state: enabled
+        immediate: yes
+      loop: "{{ fw_ports }}"
+      tags: open-ports

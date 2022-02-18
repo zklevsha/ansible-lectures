@@ -1,0 +1,14 @@
+ProxyMode=1
+Server={{ zabbix_server }}
+Hostname={{ inventory_hostname }}
+ListenPort={{ listen_port }}
+LogFile={{zabbix_install_path}}/log/{{ inventory_hostname }}.log
+LogFileSize={{ log_file_size }}
+PidFile={{ zabbix_install_path }}/tmp/{{ inventory_hostname }}.pid
+SocketDir={{ zabbix_install_path }}/var/sockets/{{ inventory_hostname }}
+DBName={{ zabbix_install_path }}/var/{{ inventory_hostname }}.sqlite
+DBUser=zabbix
+ExternalScripts=/opt/zabbix/scripts/external
+StartPingers={{ start_pingers }}
+StartPollers={{ start_pollers }}
+StartPollersUnreachable={{ start_pollers_unreachable }}

@@ -1,0 +1,11 @@
+---
+- name: Deploy balancer
+  hosts: balancer
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Copy config file
+      ansible.builtin.template:
+        src: haproxy.cfg.j2
+        dest: /opt/haproxy.cfg
+      tags: copy-config

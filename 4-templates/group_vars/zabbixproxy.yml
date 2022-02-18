@@ -1,0 +1,17 @@
+zabbix_server: 10.1.1.1
+listen_port: 10051
+zabbix_install_path: /opt/zabbix
+log_file_size: 128
+start_pingers: 10
+start_pollers: 20
+start_pollers_unreachable: 20
+fw_ports:
+  - 10050/tcp
+  - 10051/tcp
+dirs: 
+  - var
+  - var/sockets
+  - log
+  - etc
+  - scripts
+  - bin

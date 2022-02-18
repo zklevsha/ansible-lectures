@@ -1,0 +1,20 @@
+[ansible]
+ansible1 ansible_host=10.0.71.17
+
+[nodes]
+node1 ansible_host=10.0.71.18
+node2 ansible_host=10.0.71.19
+node3 ansible_host=10.0.71.20
+
+[zabbixproxy]
+zabbixproxy1 ansible_host=10.0.71.18
+zabbixproxy2 ansible_host=10.0.71.19
+
+
+[balancer]
+haproxy1 ansible_host=10.0.71.17
+
+[backend]
+backend1 ansible_host=10.0.71.18
+backend2 ansible_host=10.0.71.19
+backend3 ansible_host=10.0.71.20

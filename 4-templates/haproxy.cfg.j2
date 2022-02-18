@@ -1,0 +1,20 @@
+
+{% if enable_stats_page %}
+frontend stats
+    bind *:8404
+    stats enable
+    stats uri /stats
+    stats refresh 10s
+    stats admin if LOCALHOST
+{% endif %}
+
+frontend web
+    bind *:{{ frontend_port }}
+    use_backend web_pool
+
+backend web_pool
+    http-check expect status 200
+{% for host in groups['backend'] %}
+    server {{ host }} {{ hostvars[host].ansible_host }}:{{ backend_port }} check
+{% endfor %}
+
